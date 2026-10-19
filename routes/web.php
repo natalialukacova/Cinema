@@ -1,9 +1,5 @@
 <?php
 
-use App\Controllers\Website\HomeController;
-
-$homeController = new HomeController();
-
 $router->get("/", function () use ($homeController) {
     $homeController->index();
 });
