@@ -5,6 +5,7 @@ use App\Core\Router;
 
 require_once __DIR__ . "/../src/Core/Database.php";
 require_once __DIR__ . "/../src/Core/Router.php";
+require_once __DIR__ . "/../src/Core/View.php";
 
 $config = require __DIR__ . "/../config/database.php";
 

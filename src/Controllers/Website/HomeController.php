@@ -2,11 +2,17 @@
 
 namespace App\Controllers\Website;
 
+use App\Core\View;
+
 class HomeController
 {
     public function index(): void
     {
-        require __DIR__
-            . "/../../../views/pages/Website/home.php";
+        View::render(
+            "pages/Website/home",
+            [
+                "title" => "Cinema"
+            ]
+        );
     }
 }
