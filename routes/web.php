@@ -2,9 +2,6 @@
 
 use App\Controllers\Website\HomeController;
 
-require_once __DIR__
-    . "/../src/Controllers/Website/HomeController.php";
-
 $homeController = new HomeController();
 
 $router->get("/", function () use ($homeController) {

@@ -1,11 +1,13 @@
 <?php
 
+use App\Core\Autoloader;
 use App\Core\Database;
 use App\Core\Router;
 
-require_once __DIR__ . "/../src/Core/Database.php";
-require_once __DIR__ . "/../src/Core/Router.php";
-require_once __DIR__ . "/../src/Core/View.php";
+require_once __DIR__
+    . "/../src/Core/Autoloader.php";
+
+Autoloader::register();
 
 $config = require __DIR__ . "/../config/database.php";
 
