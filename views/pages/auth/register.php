@@ -1,17 +1,17 @@
-<?php if (!empty($error)): ?>
-    <p role="alert">
-        <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
-    </p>
-<?php endif; ?>
-
-<?php if (!empty($success)): ?>
-    <p role="status">
-        <?= htmlspecialchars($success, ENT_QUOTES, 'UTF-8') ?>
-    </p>
-<?php endif; ?>
-
 <main>
     <h1>Create an Account</h1>
+
+    <?php if (!empty($error)): ?>
+        <p role="alert">
+            <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
+        </p>
+    <?php endif; ?>
+
+    <?php if (!empty($success)): ?>
+        <p role="status">
+            <?= htmlspecialchars($success, ENT_QUOTES, 'UTF-8') ?>
+        </p>
+    <?php endif; ?>
 
     <form action="" method="POST">
 

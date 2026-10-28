@@ -80,4 +80,26 @@ class UserService
         // Save user
         return $this->userRepository->create($user);
     }
+    
+    public function login(
+        string $email,
+        string $password
+    ): ?UserAccount {
+        $email = trim($email);
+
+        $user = $this->userRepository->findByEmail($email);
+
+        if ($user === null) {
+            return null;
+        }
+
+        if (!password_verify(
+            $password,
+            $user->getPasswordHash()
+        )) {
+            return null;
+        }
+
+        return $user;
+    }
 }
