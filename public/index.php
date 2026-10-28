@@ -6,6 +6,19 @@ use App\Core\Router;
 use App\Controllers\Website\HomeController;
 use App\Repositories\MovieRepository;
 use App\Services\MovieService;
+use App\Controllers\Auth\AuthController;
+use App\Repositories\UserRepository;
+use App\Services\UserService;
+
+
+session_set_cookie_params([
+    "httponly" => true,
+    "secure" => !empty($_SERVER["HTTPS"])
+        && $_SERVER["HTTPS"] !== "off",
+    "samesite" => "Lax"
+]);
+
+session_start();
 
 require_once __DIR__
     . "/../src/Core/Autoloader.php";
@@ -24,6 +37,10 @@ try {
 $movieRepository = new MovieRepository($pdo);
 $movieService = new MovieService($movieRepository);
 $homeController = new HomeController($movieService);
+
+$userRepository = new UserRepository($pdo);
+$userService = new UserService($userRepository);
+$authController = new AuthController($userService);
 
 $basePath = rtrim(
     dirname($_SERVER["SCRIPT_NAME"]),
