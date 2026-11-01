@@ -40,6 +40,18 @@ $router->get("/showings", function () use ($programController) {
     $programController->showings();
 });
 
+$router->get("/booking", function () use ($bookingController) {
+    $bookingController->show();
+});
+
+$router->post("/booking", function () use ($bookingController) {
+    $bookingController->create();
+});
+
+$router->get("/booking-confirmation", function () use ($bookingController) {
+    $bookingController->confirmation();
+});
+
 $router->notFound(function () {
     echo "<h1>404</h1>";
     echo "<p>Page not found.</p>";

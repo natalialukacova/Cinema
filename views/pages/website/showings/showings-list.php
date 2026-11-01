@@ -51,6 +51,17 @@
                 ) ?>">
                     View Movie
                 </a>
+                
+                <a href="<?= htmlspecialchars(
+                    rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\")
+                    . "/booking?showingID="
+                    . (int) $showing["showingID"],
+                    ENT_QUOTES,
+                    "UTF-8"
+                ) ?>">
+                    Book Tickets
+                </a>
+
             </article>
         <?php endforeach; ?>
 

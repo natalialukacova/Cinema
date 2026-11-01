@@ -15,6 +15,9 @@ use App\Repositories\ShowingRepository;
 use App\Controllers\Website\ProgramController;
 use App\Repositories\VenueRepository;
 use App\Services\ProgramService;
+use App\Repositories\BookingRepository;
+use App\Services\BookingService;
+use App\Controllers\Website\BookingController;
 
 
 session_set_cookie_params([
@@ -67,6 +70,10 @@ $programService = new ProgramService(
 $programController = new ProgramController(
     $programService
 );
+
+$bookingRepository = new BookingRepository($pdo);
+$bookingService = new BookingService($bookingRepository);
+$bookingController = new BookingController($bookingService);
 
 $basePath = rtrim(
     dirname($_SERVER["SCRIPT_NAME"]),
