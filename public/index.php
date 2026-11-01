@@ -12,6 +12,9 @@ use App\Services\UserService;
 use App\Controllers\Website\ProfileController;
 use App\Controllers\Website\MovieController;
 use App\Repositories\ShowingRepository;
+use App\Controllers\Website\ProgramController;
+use App\Repositories\VenueRepository;
+use App\Services\ProgramService;
 
 
 session_set_cookie_params([
@@ -52,6 +55,17 @@ $showingRepository = new ShowingRepository($pdo);
 $movieController = new MovieController(
     $movieService,
     $showingRepository
+);
+
+$venueRepository = new VenueRepository($pdo);
+
+$programService = new ProgramService(
+    $venueRepository,
+    $showingRepository
+);
+
+$programController = new ProgramController(
+    $programService
 );
 
 $basePath = rtrim(

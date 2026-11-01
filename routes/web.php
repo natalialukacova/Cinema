@@ -32,6 +32,14 @@ $router->get("/movie", function () use ($movieController) {
     $movieController->show();
 });
 
+$router->get("/venues", function () use ($programController) {
+    $programController->venues();
+});
+
+$router->get("/showings", function () use ($programController) {
+    $programController->showings();
+});
+
 $router->notFound(function () {
     echo "<h1>404</h1>";
     echo "<p>Page not found.</p>";

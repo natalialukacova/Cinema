@@ -35,4 +35,28 @@ class ShowingRepository
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    public function findUpcomingAll(): array
+    {
+        $statement = $this->connection->query(
+            "SELECT
+                s.showingID,
+                s.movieID,
+                s.startDateTime,
+                s.basePrice,
+                m.title AS movieTitle,
+                v.name AS venueName
+            FROM Showing s
+            INNER JOIN Movie m
+                ON s.movieID = m.movieID
+            INNER JOIN Venue v
+                ON s.venueID = v.venueID
+            WHERE s.status = 'scheduled'
+            AND s.startDateTime >= NOW()
+            AND v.isActive = 1
+            ORDER BY s.startDateTime ASC"
+        );
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

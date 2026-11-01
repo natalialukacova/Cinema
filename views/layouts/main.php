@@ -27,6 +27,18 @@ $basePath = rtrim(
         'UTF-8'
     ) ?>">Home</a>
 
+    <a href="<?= htmlspecialchars(
+        $basePath . "/venues",
+        ENT_QUOTES,
+        "UTF-8"
+    ) ?>">Venues</a>
+
+    <a href="<?= htmlspecialchars(
+        $basePath . "/showings",
+        ENT_QUOTES,
+        "UTF-8"
+    ) ?>">Showings</a>
+
     <?php if (isset($_SESSION["user_id"])): ?>
 
         <a href="<?= htmlspecialchars(
