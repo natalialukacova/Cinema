@@ -49,7 +49,7 @@ class ProfileController
         }
 
         View::render(
-            "pages/website/profile",
+            "pages/website/profile/profile",
             [
                 "title" => "My Profile",
                 "user" => $user
