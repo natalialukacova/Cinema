@@ -102,4 +102,10 @@ class UserService
 
         return $user;
     }
+
+    public function getUserByID(int $userID): ?UserAccount
+    {
+        return $this->userRepository->findByID($userID);
+    }
+
 }

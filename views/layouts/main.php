@@ -8,7 +8,7 @@
     >
 
     <title>
-        <?= htmlspecialchars($title ?? "Cinema") ?>
+        <?= htmlspecialchars($title ?? "Cinema", ENT_QUOTES, 'UTF-8') ?>
     </title>
 </head>
 <body>
@@ -28,6 +28,14 @@ $basePath = rtrim(
     ) ?>">Home</a>
 
     <?php if (isset($_SESSION["user_id"])): ?>
+
+        <a href="<?= htmlspecialchars(
+            $basePath . "/profile",
+            ENT_QUOTES,
+            'UTF-8'
+        ) ?>">
+            My Profile
+        </a>
 
         <span>Logged in</span>
 

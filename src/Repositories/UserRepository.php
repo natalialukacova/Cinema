@@ -42,6 +42,34 @@ class UserRepository implements UserRepositoryInterface
             (int) $row["userRank"]
         );
     }
+
+    public function findByID(int $userID): ?UserAccount
+    {
+        $statement = $this->connection->prepare(
+            "SELECT *
+            FROM UserAccount
+            WHERE userID = :userID"
+        );
+
+        $statement->execute([
+            "userID" => $userID
+        ]);
+
+        $row = $statement->fetch();
+
+        if (!$row) {
+            return null;
+        }
+
+        return new UserAccount(
+            (int) $row["userID"],
+            $row["firstName"],
+            $row["lastName"],
+            $row["email"],
+            $row["passwordHash"],
+            (int) $row["userRank"]
+        );
+    }
     
     public function create(UserAccount $user): bool
     {

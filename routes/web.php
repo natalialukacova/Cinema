@@ -24,6 +24,10 @@ $router->post("/logout", function () use ($authController) {
     $authController->logout();
 });
 
+$router->get("/profile", function () use ($profileController) {
+    $profileController->index();
+});
+
 $router->notFound(function () {
     echo "<h1>404</h1>";
     echo "<p>Page not found.</p>";
