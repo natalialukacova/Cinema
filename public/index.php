@@ -10,6 +10,8 @@ use App\Controllers\Auth\AuthController;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use App\Controllers\Website\ProfileController;
+use App\Controllers\Website\MovieController;
+use App\Repositories\ShowingRepository;
 
 
 session_set_cookie_params([
@@ -44,6 +46,13 @@ $userService = new UserService($userRepository);
 $authController = new AuthController($userService);
 
 $profileController = new ProfileController($userService);
+
+$showingRepository = new ShowingRepository($pdo);
+
+$movieController = new MovieController(
+    $movieService,
+    $showingRepository
+);
 
 $basePath = rtrim(
     dirname($_SERVER["SCRIPT_NAME"]),

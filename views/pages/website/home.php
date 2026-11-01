@@ -32,9 +32,19 @@
                         <?php endif; ?>
 
                         <h3>
-                            <?= htmlspecialchars(
-                                $movie->getTitle()
-                            ) ?>
+                            <a href="<?= htmlspecialchars(
+                                rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\")
+                                . "/movie?id="
+                                . (int) $movie->getMovieID(),
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>">
+                                <?= htmlspecialchars(
+                                    $movie->getTitle(),
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+                            </a>
                         </h3>
 
                         <p>

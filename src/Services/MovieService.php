@@ -18,4 +18,9 @@ class MovieService
     {
         return $this->movieRepository->findAll();
     }
+
+    public function getMovieByID(int $movieID): ?\App\Models\Movie
+    {
+        return $this->movieRepository->findByID($movieID);
+    }
 }
