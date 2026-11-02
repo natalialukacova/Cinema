@@ -3,8 +3,9 @@
 namespace App\Repositories;
 
 use PDO;
+use App\Interfaces\ShowingRepositoryInterface;
 
-class ShowingRepository
+class ShowingRepository implements ShowingRepositoryInterface
 {
     public function __construct(
         private PDO $connection

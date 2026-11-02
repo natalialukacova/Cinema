@@ -43,36 +43,39 @@ try {
     die("Database connection failed: " . $error->getMessage());
 }
 
+// Repositories
 $movieRepository = new MovieRepository($pdo);
-$movieService = new MovieService($movieRepository);
-$homeController = new HomeController($movieService);
-
-$userRepository = new UserRepository($pdo);
-$userService = new UserService($userRepository);
-$authController = new AuthController($userService);
-
-$profileController = new ProfileController($userService);
-
 $showingRepository = new ShowingRepository($pdo);
+$venueRepository = new VenueRepository($pdo);
+$userRepository = new UserRepository($pdo);
+$bookingRepository = new BookingRepository($pdo);
 
-$movieController = new MovieController(
-    $movieService,
+// Services
+$movieService = new MovieService(
+    $movieRepository,
     $showingRepository
 );
 
-$venueRepository = new VenueRepository($pdo);
+$userService = new UserService($userRepository);
 
 $programService = new ProgramService(
     $venueRepository,
     $showingRepository
 );
 
-$programController = new ProgramController(
-    $programService
-);
-
-$bookingRepository = new BookingRepository($pdo);
 $bookingService = new BookingService($bookingRepository);
+
+// Controllers
+$homeController = new HomeController($movieService);
+
+$movieController = new MovieController($movieService);
+
+$authController = new AuthController($userService);
+
+$profileController = new ProfileController($userService);
+
+$programController = new ProgramController($programService);
+
 $bookingController = new BookingController($bookingService);
 
 $basePath = rtrim(

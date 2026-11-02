@@ -3,15 +3,15 @@
 namespace App\Services;
 
 use App\Interfaces\MovieRepositoryInterface;
+use App\Interfaces\ShowingRepositoryInterface;
+use App\Models\Movie;
 
 class MovieService
 {
-    private MovieRepositoryInterface $movieRepository;
-
     public function __construct(
-        MovieRepositoryInterface $movieRepository
+        private MovieRepositoryInterface $movieRepository,
+        private ShowingRepositoryInterface $showingRepository
     ) {
-        $this->movieRepository = $movieRepository;
     }
 
     public function getAllMovies(): array
@@ -19,8 +19,14 @@ class MovieService
         return $this->movieRepository->findAll();
     }
 
-    public function getMovieByID(int $movieID): ?\App\Models\Movie
+    public function getMovieByID(int $movieID): ?Movie
     {
         return $this->movieRepository->findByID($movieID);
+    }
+
+    public function getUpcomingShowingsByMovieID(int $movieID): array
+    {
+        return $this->showingRepository
+            ->findUpcomingByMovieID($movieID);
     }
 }

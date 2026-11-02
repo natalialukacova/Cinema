@@ -4,13 +4,11 @@ namespace App\Controllers\Website;
 
 use App\Core\View;
 use App\Services\MovieService;
-use App\Repositories\ShowingRepository;
 
 class MovieController
 {
     public function __construct(
-        private MovieService $movieService,
-        private ShowingRepository $showingRepository
+        private MovieService $movieService
     ) {
     }
 
@@ -37,8 +35,8 @@ class MovieController
             return;
         }
 
-        $showings = $this->showingRepository
-            ->findUpcomingByMovieID($movieID);
+        $showings = $this->movieService
+            ->getUpcomingShowingsByMovieID($movieID);
 
         View::render(
             "pages/website/movies/movie-details",

@@ -4,11 +4,12 @@ namespace App\Services;
 
 use App\Repositories\BookingRepository;
 use InvalidArgumentException;
+use App\Interfaces\BookingRepositoryInterface;
 
 class BookingService
 {
     public function __construct(
-        private BookingRepository $bookingRepository
+        private BookingRepositoryInterface $bookingRepository
     ) {
     }
 

@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use App\Repositories\VenueRepository;
-use App\Repositories\ShowingRepository;
+use App\Interfaces\VenueRepositoryInterface;
+use App\Interfaces\ShowingRepositoryInterface;
 
 class ProgramService
 {
     public function __construct(
-        private VenueRepository $venueRepository,
-        private ShowingRepository $showingRepository
+        private VenueRepositoryInterface $venueRepository,
+        private ShowingRepositoryInterface $showingRepository
     ) {
     }
 

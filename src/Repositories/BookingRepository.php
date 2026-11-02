@@ -5,8 +5,9 @@ namespace App\Repositories;
 use DomainException;
 use PDO;
 use Throwable;
+use App\Interfaces\BookingRepositoryInterface;
 
-class BookingRepository
+class BookingRepository implements BookingRepositoryInterface
 {
     public function __construct(
         private PDO $connection
