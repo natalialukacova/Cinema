@@ -203,4 +203,67 @@ class BookingController
             ]
         );
     }
+
+    public function checkout(): void
+    {
+        $this->requireLogin();
+
+        $showingID = filter_input(
+            INPUT_GET,
+            "showingID",
+            FILTER_VALIDATE_INT,
+            ["options" => ["min_range" => 1]]
+        );
+
+        $ticketCount = filter_input(
+            INPUT_GET,
+            "ticketCount",
+            FILTER_VALIDATE_INT,
+            ["options" => [
+                "min_range" => 1,
+                "max_range" => 5
+            ]]
+        );
+
+        if (!is_int($showingID) || !is_int($ticketCount)) {
+            http_response_code(400);
+            echo "Invalid ticket selection.";
+            return;
+        }
+
+        $showing = $this->bookingService->getShowing($showingID);
+
+        if ($showing === null) {
+            http_response_code(404);
+            echo "Showing not found.";
+            return;
+        }
+
+        if (empty($_SESSION["csrf_token"])) {
+            $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+        }
+
+        // Calculate total from the database price
+        $priceInCents = (int) round(
+            (float) $showing["basePrice"] * 100
+        );
+
+        $totalPrice = number_format(
+            $priceInCents * $ticketCount / 100,
+            2,
+            ".",
+            ""
+        );
+
+        View::render(
+            "pages/website/checkout/checkout",
+            [
+                "title" => "Checkout",
+                "showing" => $showing,
+                "ticketCount" => $ticketCount,
+                "totalPrice" => $totalPrice,
+                "csrfToken" => $_SESSION["csrf_token"]
+            ]
+        );
+    }
 }

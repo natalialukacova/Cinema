@@ -45,17 +45,15 @@
         </p>
     <?php endif; ?>
 
-    <form action="" method="POST">
-
-        <input
-            type="hidden"
-            name="csrf_token"
-            value="<?= htmlspecialchars(
-                $csrfToken,
-                ENT_QUOTES,
-                "UTF-8"
-            ) ?>"
-        >
+    <form
+        action="<?= htmlspecialchars(
+            rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\")
+            . "/checkout",
+            ENT_QUOTES,
+            "UTF-8"
+        ) ?>"
+        method="GET"
+    >
 
         <input
             type="hidden"
@@ -63,9 +61,7 @@
             value="<?= (int) $showing["showingID"] ?>"
         >
 
-        <label for="ticketCount">
-            Number of tickets
-        </label>
+        <label for="ticketCount">Number of tickets</label>
 
         <select id="ticketCount" name="ticketCount">
             <?php for ($i = 1; $i <= 5; $i++): ?>
@@ -76,7 +72,7 @@
         </select>
 
         <button type="submit">
-            Confirm Booking
+            Continue to Checkout
         </button>
     </form>
 </main>

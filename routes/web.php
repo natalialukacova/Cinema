@@ -56,6 +56,10 @@ $router->get("/my-bookings", function () use ($bookingController) {
     $bookingController->myBookings();
 });
 
+$router->get("/checkout", function () use ($bookingController) {
+    $bookingController->checkout();
+});
+
 $router->notFound(function () {
     echo "<h1>404</h1>";
     echo "<p>Page not found.</p>";
