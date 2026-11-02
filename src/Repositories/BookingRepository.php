@@ -217,4 +217,35 @@ class BookingRepository implements BookingRepositoryInterface
 
         return $booking;
     }
+
+    public function findByUserID(int $userID): array
+    {
+        $statement = $this->connection->prepare(
+            "SELECT
+                b.bookingID,
+                b.status,
+                b.totalPrice,
+                b.bookedAt,
+                s.startDateTime,
+                m.title AS movieTitle,
+                v.name AS venueName,
+                (
+                    SELECT COUNT(*)
+                    FROM BookingSeat bs
+                    WHERE bs.bookingID = b.bookingID
+                ) AS ticketCount
+            FROM Booking b
+            JOIN Showing s ON b.showingID = s.showingID
+            JOIN Movie m ON s.movieID = m.movieID
+            JOIN Venue v ON s.venueID = v.venueID
+            WHERE b.userID = :userID
+            ORDER BY b.bookedAt DESC, b.bookingID DESC"
+        );
+
+        $statement->execute([
+            "userID" => $userID
+        ]);
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

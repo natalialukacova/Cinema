@@ -45,4 +45,9 @@ class BookingService
             $userID
         );
     }
+
+    public function getUserBookings(int $userID): array
+{
+    return $this->bookingRepository->findByUserID($userID);
+}
 }

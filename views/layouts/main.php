@@ -49,6 +49,12 @@ $basePath = rtrim(
             My Profile
         </a>
 
+        <a href="<?= htmlspecialchars(
+            $basePath . "/my-bookings",
+            ENT_QUOTES,
+            "UTF-8"
+        ) ?>">My Bookings</a>
+
         <span>Logged in</span>
 
         <form

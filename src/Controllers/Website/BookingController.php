@@ -187,4 +187,20 @@ class BookingController
             ]
         );
     }
+ 
+    public function myBookings(): void
+    {
+        $userID = $this->requireLogin();
+
+        $bookings = $this->bookingService
+            ->getUserBookings($userID);
+
+        View::render(
+            "pages/website/booking/my-bookings",
+            [
+                "title" => "My Bookings",
+                "bookings" => $bookings
+            ]
+        );
+    }
 }

@@ -16,4 +16,6 @@ interface BookingRepositoryInterface
         int $bookingID,
         int $userID
     ): ?array;
+
+    public function findByUserID(int $userID): array;
 }
