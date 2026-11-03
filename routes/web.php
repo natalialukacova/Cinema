@@ -68,6 +68,30 @@ $router->get("/admin/bookings", function () use ($adminController) {
     $adminController->bookings();
 });
 
+$router->get("/admin/movies", function () use ($adminMovieController) {
+    $adminMovieController->index();
+});
+
+$router->get("/admin/movies/create", function () use ($adminMovieController) {
+    $adminMovieController->create();
+});
+
+$router->post("/admin/movies/create", function () use ($adminMovieController) {
+    $adminMovieController->store();
+});
+
+$router->get("/admin/movies/edit", function () use ($adminMovieController) {
+    $adminMovieController->edit();
+});
+
+$router->post("/admin/movies/update", function () use ($adminMovieController) {
+    $adminMovieController->update();
+});
+
+$router->post("/admin/movies/delete", function () use ($adminMovieController) {
+    $adminMovieController->delete();
+});
+
 $router->notFound(function () {
     echo "<h1>404</h1>";
     echo "<p>Page not found.</p>";

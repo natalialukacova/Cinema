@@ -35,4 +35,15 @@
     ) ?>">
         View All Bookings
     </a>
+
+    <p>
+        <a href="<?= htmlspecialchars(
+            rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\")
+            . "/admin/movies",
+            ENT_QUOTES,
+            "UTF-8"
+        ) ?>">
+            Manage Movies
+        </a>
+    </p>
 </main>

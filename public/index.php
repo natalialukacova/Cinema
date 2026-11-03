@@ -21,6 +21,8 @@ use App\Controllers\Website\BookingController;
 use App\Repositories\AdminRepository;
 use App\Services\AdminService;
 use App\Controllers\Admin\AdminController;
+use App\Core\AdminGuard;
+use App\Controllers\Admin\AdminMovieController;
 
 session_set_cookie_params([
     "httponly" => true,
@@ -70,6 +72,8 @@ $bookingService = new BookingService($bookingRepository);
 
 $adminService = new AdminService($adminRepository);
 
+$adminGuard = new AdminGuard($adminService);
+
 // Controllers
 $homeController = new HomeController($movieService);
 
@@ -84,6 +88,11 @@ $programController = new ProgramController($programService);
 $bookingController = new BookingController($bookingService);
 
 $adminController = new AdminController($adminService);
+
+$adminMovieController = new AdminMovieController(
+    $movieService,
+    $adminGuard
+);
 
 $basePath = rtrim(
     dirname($_SERVER["SCRIPT_NAME"]),
