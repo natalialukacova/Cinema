@@ -60,6 +60,14 @@ $router->get("/checkout", function () use ($bookingController) {
     $bookingController->checkout();
 });
 
+$router->get("/admin", function () use ($adminController) {
+    $adminController->dashboard();
+});
+
+$router->get("/admin/bookings", function () use ($adminController) {
+    $adminController->bookings();
+});
+
 $router->notFound(function () {
     echo "<h1>404</h1>";
     echo "<p>Page not found.</p>";

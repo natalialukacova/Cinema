@@ -55,6 +55,16 @@ $basePath = rtrim(
             "UTF-8"
         ) ?>">My Bookings</a>
 
+        <?php if ((int) ($_SESSION["user_rank"] ?? 0) === 2): ?>
+            <a href="<?= htmlspecialchars(
+                $basePath . "/admin",
+                ENT_QUOTES,
+                "UTF-8"
+            ) ?>">
+                Admin
+            </a>
+        <?php endif; ?>
+
         <span>Logged in</span>
 
         <form

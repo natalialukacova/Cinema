@@ -18,7 +18,9 @@ use App\Services\ProgramService;
 use App\Repositories\BookingRepository;
 use App\Services\BookingService;
 use App\Controllers\Website\BookingController;
-
+use App\Repositories\AdminRepository;
+use App\Services\AdminService;
+use App\Controllers\Admin\AdminController;
 
 session_set_cookie_params([
     "httponly" => true,
@@ -49,6 +51,7 @@ $showingRepository = new ShowingRepository($pdo);
 $venueRepository = new VenueRepository($pdo);
 $userRepository = new UserRepository($pdo);
 $bookingRepository = new BookingRepository($pdo);
+$adminRepository = new AdminRepository($pdo);
 
 // Services
 $movieService = new MovieService(
@@ -65,6 +68,8 @@ $programService = new ProgramService(
 
 $bookingService = new BookingService($bookingRepository);
 
+$adminService = new AdminService($adminRepository);
+
 // Controllers
 $homeController = new HomeController($movieService);
 
@@ -77,6 +82,8 @@ $profileController = new ProfileController($userService);
 $programController = new ProgramController($programService);
 
 $bookingController = new BookingController($bookingService);
+
+$adminController = new AdminController($adminService);
 
 $basePath = rtrim(
     dirname($_SERVER["SCRIPT_NAME"]),
