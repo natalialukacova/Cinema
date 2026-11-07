@@ -78,7 +78,7 @@ WHERE c.email = 'info@cinema.example'
         AND existing.seatNumber = n.seatNumber
   );
 
--- Add a demo showing scheduled for 18:00, three days from today
+-- 5) Add a demo showing scheduled for 18:00, three days from today
 -- Skip if a future showing already exists to prevent duplicates
 INSERT INTO Showing (
     movieID, venueID, startDateTime, basePrice, isPremiere, status
@@ -111,7 +111,52 @@ WHERE c.email = 'info@cinema.example'
 ORDER BY m.movieID, v.venueID
 LIMIT 1;
 
--- 6) Opening hours for the demo cinema: Monday-Sunday, 12:00-22:00
+
+-- 6) Additional future showings for testing
+-- Skip showings that already exist at the same venue and time
+INSERT INTO Showing (
+    movieID, venueID, startDateTime, basePrice, isPremiere, status
+)
+SELECT
+    m.movieID,
+    v.venueID,
+    dates.startDateTime,
+    dates.basePrice,
+    0,
+    'scheduled'
+FROM (
+    SELECT '2026-11-14 18:00:00' AS startDateTime, 95.00 AS basePrice
+    UNION ALL SELECT '2026-11-28 19:00:00', 95.00
+    UNION ALL SELECT '2026-12-12 18:00:00', 110.00
+    UNION ALL SELECT '2026-12-26 19:00:00', 110.00
+    UNION ALL SELECT '2027-01-16 18:00:00', 100.00
+    UNION ALL SELECT '2027-02-13 19:00:00', 100.00
+    UNION ALL SELECT '2027-03-13 18:00:00', 105.00
+    UNION ALL SELECT '2027-04-10 19:00:00', 105.00
+) AS dates
+JOIN Movie AS m ON m.movieID = (
+    SELECT MIN(movieID)
+    FROM Movie
+    WHERE title = 'The Last Signal'
+)
+JOIN Venue AS v ON v.venueID = (
+    SELECT MIN(v2.venueID)
+    FROM Venue AS v2
+    JOIN Company AS c2 ON c2.companyID = v2.companyID
+    WHERE v2.name = 'Main Hall'
+      AND v2.isActive = 1
+      AND c2.email = 'info@cinema.example'
+)
+WHERE dates.startDateTime > NOW()
+  AND NOT EXISTS (
+      SELECT 1
+      FROM Showing AS s
+      WHERE s.venueID = v.venueID
+        AND s.startDateTime = dates.startDateTime
+  );
+
+
+-- 7) Opening hours for the demo cinema: Monday-Sunday, 12:00-22:00
 INSERT INTO OpeningHour (companyID, dayOfWeek, opensAt, closesAt, isClosed)
 SELECT
     c.companyID,
@@ -136,7 +181,7 @@ WHERE c.email = 'info@cinema.example'
         AND h.dayOfWeek = d.dayOfWeek
   );
 
--- 7) One published news article for the homepage/news page
+-- 8) One published news article for the homepage/news page
 INSERT INTO News (companyID, title, content, publishedAt, imageURL, isPublished)
 SELECT
     c.companyID,
@@ -153,7 +198,7 @@ WHERE c.email = 'info@cinema.example'
         AND n.title = 'Welcome to Cinema'
   );
 
--- 8) Quick verification queries
+-- 9) Quick verification queries
 -- These SELECT queries show the inserted / existing demo records
 SELECT c.companyID, c.name, c.email
 FROM Company AS c
