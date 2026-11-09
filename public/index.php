@@ -23,6 +23,8 @@ use App\Services\AdminService;
 use App\Controllers\Admin\AdminController;
 use App\Core\AdminGuard;
 use App\Controllers\Admin\AdminMovieController;
+use App\Services\AdminShowingService;
+use App\Controllers\Admin\AdminShowingController;
 
 session_set_cookie_params([
     "httponly" => true,
@@ -74,6 +76,12 @@ $adminService = new AdminService($adminRepository);
 
 $adminGuard = new AdminGuard($adminService);
 
+$adminShowingService = new AdminShowingService(
+    $showingRepository,
+    $movieRepository,
+    $venueRepository
+);
+
 // Controllers
 $homeController = new HomeController($movieService);
 
@@ -91,6 +99,11 @@ $adminController = new AdminController($adminService);
 
 $adminMovieController = new AdminMovieController(
     $movieService,
+    $adminGuard
+);
+
+$adminShowingController = new AdminShowingController(
+    $adminShowingService,
     $adminGuard
 );
 

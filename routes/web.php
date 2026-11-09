@@ -92,6 +92,30 @@ $router->post("/admin/movies/delete", function () use ($adminMovieController) {
     $adminMovieController->delete();
 });
 
+$router->get("/admin/showings", function () use ($adminShowingController) {
+    $adminShowingController->index();
+});
+
+$router->get("/admin/showings/create", function () use ($adminShowingController) {
+    $adminShowingController->create();
+});
+
+$router->post("/admin/showings/create", function () use ($adminShowingController) {
+    $adminShowingController->store();
+});
+
+$router->get("/admin/showings/edit", function () use ($adminShowingController) {
+    $adminShowingController->edit();
+});
+
+$router->post("/admin/showings/update", function () use ($adminShowingController) {
+    $adminShowingController->update();
+});
+
+$router->post("/admin/showings/delete", function () use ($adminShowingController) {
+    $adminShowingController->delete();
+});
+
 $router->notFound(function () {
     echo "<h1>404</h1>";
     echo "<p>Page not found.</p>";

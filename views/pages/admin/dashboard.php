@@ -46,4 +46,14 @@
             Manage Movies
         </a>
     </p>
+    <p>
+        <a href="<?= htmlspecialchars(
+            rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\")
+            . "/admin/showings",
+            ENT_QUOTES,
+            "UTF-8"
+        ) ?>">
+            Manage Showings
+        </a>
+    </p>
 </main>
