@@ -39,6 +39,12 @@ $basePath = rtrim(
         "UTF-8"
     ) ?>">Showings</a>
 
+    <a href="<?= htmlspecialchars(
+        $basePath . "/news",
+        ENT_QUOTES,
+        "UTF-8"
+    ) ?>">News</a>
+    
     <?php if (isset($_SESSION["user_id"])): ?>
 
         <a href="<?= htmlspecialchars(

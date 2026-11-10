@@ -116,6 +116,34 @@ $router->post("/admin/showings/delete", function () use ($adminShowingController
     $adminShowingController->delete();
 });
 
+$router->get("/admin/news", function () use ($adminNewsController) {
+    $adminNewsController->index();
+});
+
+$router->get("/admin/news/create", function () use ($adminNewsController) {
+    $adminNewsController->create();
+});
+
+$router->post("/admin/news/create", function () use ($adminNewsController) {
+    $adminNewsController->store();
+});
+
+$router->get("/admin/news/edit", function () use ($adminNewsController) {
+    $adminNewsController->edit();
+});
+
+$router->post("/admin/news/update", function () use ($adminNewsController) {
+    $adminNewsController->update();
+});
+
+$router->post("/admin/news/delete", function () use ($adminNewsController) {
+    $adminNewsController->delete();
+});
+
+$router->get("/news", function () use ($newsController) {
+    $newsController->index();
+});
+
 $router->notFound(function () {
     echo "<h1>404</h1>";
     echo "<p>Page not found.</p>";

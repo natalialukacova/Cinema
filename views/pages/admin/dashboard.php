@@ -56,4 +56,14 @@
             Manage Showings
         </a>
     </p>
+    <p>
+        <a href="<?= htmlspecialchars(
+            rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\")
+            . "/admin/news",
+            ENT_QUOTES,
+            "UTF-8"
+        ) ?>">
+            Manage News
+        </a>
+    </p>
 </main>
