@@ -222,4 +222,27 @@ class ShowingRepository implements ShowingRepositoryInterface
 
         return $statement->fetchColumn() !== false;
     }
+
+    public function findToday(): array
+    {
+        $statement = $this->connection->query(
+            "SELECT
+                s.showingID,
+                s.movieID,
+                s.startDateTime,
+                s.basePrice,
+                m.title AS movieTitle,
+                v.name AS venueName
+            FROM Showing s
+            JOIN Movie m ON s.movieID = m.movieID
+            JOIN Venue v ON s.venueID = v.venueID
+            WHERE s.status = 'scheduled'
+            AND s.startDateTime >= NOW()
+            AND s.startDateTime < CURDATE() + INTERVAL 1 DAY
+            AND v.isActive = 1
+            ORDER BY s.startDateTime ASC"
+        );
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

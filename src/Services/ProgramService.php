@@ -22,4 +22,9 @@ class ProgramService
     {
         return $this->showingRepository->findUpcomingAll();
     }
+    
+    public function getTodayShowings(): array
+    {
+        return $this->showingRepository->findToday();
+    }
 }

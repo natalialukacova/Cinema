@@ -29,6 +29,8 @@ use App\Repositories\NewsRepository;
 use App\Services\NewsService;
 use App\Controllers\Admin\AdminNewsController;
 use App\Controllers\Website\NewsController;
+use App\Repositories\CompanyRepository;
+use App\Services\CompanyService;
 
 session_set_cookie_params([
     "httponly" => true,
@@ -61,6 +63,7 @@ $userRepository = new UserRepository($pdo);
 $bookingRepository = new BookingRepository($pdo);
 $adminRepository = new AdminRepository($pdo);
 $newsRepository = new NewsRepository($pdo);
+$companyRepository = new CompanyRepository($pdo);
 
 // Services
 $movieService = new MovieService(
@@ -89,8 +92,15 @@ $adminShowingService = new AdminShowingService(
 
 $newsService = new NewsService($newsRepository);
 
+$companyService = new CompanyService($companyRepository);
+
 // Controllers
-$homeController = new HomeController($movieService);
+$homeController = new HomeController(
+    $movieService,
+    $newsService,
+    $programService,
+    $companyService
+);
 
 $movieController = new MovieController($movieService);
 
@@ -120,6 +130,7 @@ $adminNewsController = new AdminNewsController(
 );
 
 $newsController = new NewsController($newsService);
+
 
 $basePath = rtrim(
     dirname($_SERVER["SCRIPT_NAME"]),

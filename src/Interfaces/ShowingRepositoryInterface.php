@@ -26,4 +26,6 @@ interface ShowingRepositoryInterface
         string $startDateTime,
         ?int $excludeID = null
     ): bool;
+
+    public function findToday(): array;
 }

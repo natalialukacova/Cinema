@@ -1,10 +1,150 @@
 <main>
 
+    <!-- Homepage header -->
     <header>
         <h1>Cinema</h1>
         <p>Discover the movies currently available.</p>
     </header>
 
+    <?php
+    // Base path for links
+    $basePath = rtrim(
+        dirname($_SERVER["SCRIPT_NAME"]),
+        "/\\"
+    );
+    ?>
+
+    <!-- Company information -->
+    <section>
+        <h2>About Cinema</h2>
+
+        <?php if ($company !== null): ?>
+            <h3>
+                <?= htmlspecialchars(
+                    $company["name"],
+                    ENT_QUOTES,
+                    "UTF-8"
+                ) ?>
+            </h3>
+
+            <p>
+                <?= nl2br(htmlspecialchars(
+                    $company["description"] ?? "",
+                    ENT_QUOTES,
+                    "UTF-8"
+                )) ?>
+            </p>
+        <?php else: ?>
+            <p>Cinema information is not available yet.</p>
+        <?php endif; ?>
+    </section>
+
+    <!-- Today's upcoming showings with booking links -->
+    <section>
+        <h2>Today's Showings</h2>
+
+        <?php if (empty($todayShowings)): ?>
+            <p>No more showings today.</p>
+        <?php else: ?>
+            <?php foreach ($todayShowings as $showing): ?>
+                <article>
+                    <h3>
+                        <?= htmlspecialchars(
+                            $showing["movieTitle"],
+                            ENT_QUOTES,
+                            "UTF-8"
+                        ) ?>
+                    </h3>
+
+                    <p>
+                        <?= htmlspecialchars(
+                            $showing["venueName"],
+                            ENT_QUOTES,
+                            "UTF-8"
+                        ) ?>
+                    </p>
+
+                    <p>
+                        <?= htmlspecialchars(
+                            date(
+                                "d.m.Y H:i",
+                                strtotime($showing["startDateTime"])
+                            ),
+                            ENT_QUOTES,
+                            "UTF-8"
+                        ) ?>
+                    </p>
+
+                    <p>
+                        <?= number_format(
+                            (float) $showing["basePrice"],
+                            2
+                        ) ?> DKK
+                    </p>
+
+                    <a href="<?= htmlspecialchars(
+                        $basePath . "/booking?showingID="
+                        . (int) $showing["showingID"],
+                        ENT_QUOTES,
+                        "UTF-8"
+                    ) ?>">
+                        Book Tickets
+                    </a>
+                </article>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+        <p>
+            <a href="<?= htmlspecialchars(
+                $basePath . "/showings",
+                ENT_QUOTES,
+                "UTF-8"
+            ) ?>">
+                View All Showings
+            </a>
+        </p>
+    </section>
+
+    <!-- Latest published news articles -->
+    <section>
+        <h2>Latest News</h2>
+
+        <?php if (empty($news)): ?>
+            <p>No news available yet.</p>
+        <?php else: ?>
+            <?php foreach ($news as $article): ?>
+                <article>
+                    <h3>
+                        <?= htmlspecialchars(
+                            $article["title"],
+                            ENT_QUOTES,
+                            "UTF-8"
+                        ) ?>
+                    </h3>
+
+                    <p>
+                        <?= nl2br(htmlspecialchars(
+                            $article["content"],
+                            ENT_QUOTES,
+                            "UTF-8"
+                        )) ?>
+                    </p>
+                </article>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+        <p>
+            <a href="<?= htmlspecialchars(
+                $basePath . "/news",
+                ENT_QUOTES,
+                "UTF-8"
+            ) ?>">
+                View All News
+            </a>
+        </p>
+    </section>
+
+    <!-- All available movies with links to movie details -->
     <section>
         <h2>Movies</h2>
 
