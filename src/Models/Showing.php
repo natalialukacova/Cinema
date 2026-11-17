@@ -11,7 +11,9 @@ class Showing
         private string $startDateTime,
         private string $basePrice,
         private bool $isPremiere,
-        private string $status
+        private string $status,
+        private ?string $movieTitle = null,
+        private ?string $venueName = null
     ) {
     }
 
@@ -48,5 +50,15 @@ class Showing
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    public function getMovieTitle(): ?string
+    {
+        return $this->movieTitle;
+    }
+
+    public function getVenueName(): ?string
+    {
+        return $this->venueName;
     }
 }

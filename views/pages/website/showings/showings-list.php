@@ -9,7 +9,7 @@
             <article>
                 <h2>
                     <?= htmlspecialchars(
-                        $showing["movieTitle"],
+                        $showing->getMovieTitle(),
                         ENT_QUOTES,
                         "UTF-8"
                     ) ?>
@@ -18,7 +18,7 @@
                 <p>
                     Venue:
                     <?= htmlspecialchars(
-                        $showing["venueName"],
+                        $showing->getVenueName(),
                         ENT_QUOTES,
                         "UTF-8"
                     ) ?>
@@ -28,14 +28,14 @@
                     Date:
                     <?= date(
                         "d.m.Y H:i",
-                        strtotime($showing["startDateTime"])
+                        strtotime($showing->getStartDateTime())
                     ) ?>
                 </p>
 
                 <p>
                     Price:
                     <?= number_format(
-                        (float) $showing["basePrice"],
+                        (float) $showing->getBasePrice(),
                         2
                     ) ?> DKK
                 </p>
@@ -45,7 +45,7 @@
                         dirname($_SERVER["SCRIPT_NAME"]),
                         "/\\"
                     ) . "/movie?id="
-                    . (int) $showing["movieID"],
+                    . (int) $showing->getMovieID(),
                     ENT_QUOTES,
                     "UTF-8"
                 ) ?>">
@@ -55,7 +55,7 @@
                 <a href="<?= htmlspecialchars(
                     rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\")
                     . "/booking?showingID="
-                    . (int) $showing["showingID"],
+                    . (int) $showing->getShowingID(),
                     ENT_QUOTES,
                     "UTF-8"
                 ) ?>">

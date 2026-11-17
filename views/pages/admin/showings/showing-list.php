@@ -40,41 +40,39 @@ $basePath = rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\");
             <tbody>
                 <?php foreach ($showings as $showing): ?>
                     <tr>
-                        <td><?= (int) $showing["showingID"] ?></td>
+                        <td><?= (int) $showing->getShowingID() ?></td>
 
                         <td><?= htmlspecialchars(
-                            $showing["movieTitle"],
+                            $showing->getMovieTitle(),
                             ENT_QUOTES,
                             "UTF-8"
                         ) ?></td>
 
                         <td><?= htmlspecialchars(
-                            $showing["venueName"],
+                            $showing->getVenueName(),
                             ENT_QUOTES,
                             "UTF-8"
                         ) ?></td>
 
                         <td><?= htmlspecialchars(
-                            $showing["startDateTime"],
+                            $showing->getStartDateTime(),
                             ENT_QUOTES,
                             "UTF-8"
                         ) ?></td>
 
                         <td>
                             <?= number_format(
-                                (float) $showing["basePrice"],
+                                (float) $showing->getBasePrice(),
                                 2
                             ) ?> DKK
                         </td>
 
                         <td>
-                            <?= (int) $showing["isPremiere"] === 1
-                                ? "Yes"
-                                : "No" ?>
+                            <?= $showing->getIsPremiere() ? "Yes" : "No" ?>
                         </td>
 
                         <td><?= htmlspecialchars(
-                            $showing["status"],
+                            $showing->getStatus(),
                             ENT_QUOTES,
                             "UTF-8"
                         ) ?></td>
@@ -82,7 +80,7 @@ $basePath = rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\");
                         <td>
                             <a href="<?= htmlspecialchars(
                                 $basePath . "/admin/showings/edit?id="
-                                . (int) $showing["showingID"],
+                                . (int) $showing->getShowingID(),
                                 ENT_QUOTES,
                                 "UTF-8"
                             ) ?>">Edit</a>
@@ -108,7 +106,7 @@ $basePath = rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\");
                                 <input
                                     type="hidden"
                                     name="showingID"
-                                    value="<?= (int) $showing["showingID"] ?>"
+                                    value="<?= (int) $showing->getShowingID() ?>"
                                 >
 
                                 <button type="submit">

@@ -50,7 +50,7 @@
                 <article>
                     <h3>
                         <?= htmlspecialchars(
-                            $showing["movieTitle"],
+                            $showing->getMovieTitle(),
                             ENT_QUOTES,
                             "UTF-8"
                         ) ?>
@@ -58,7 +58,7 @@
 
                     <p>
                         <?= htmlspecialchars(
-                            $showing["venueName"],
+                            $showing->getVenueName(),
                             ENT_QUOTES,
                             "UTF-8"
                         ) ?>
@@ -68,7 +68,7 @@
                         <?= htmlspecialchars(
                             date(
                                 "d.m.Y H:i",
-                                strtotime($showing["startDateTime"])
+                                strtotime($showing->getStartDateTime())
                             ),
                             ENT_QUOTES,
                             "UTF-8"
@@ -77,14 +77,14 @@
 
                     <p>
                         <?= number_format(
-                            (float) $showing["basePrice"],
+                            (float) $showing->getBasePrice(),
                             2
                         ) ?> DKK
                     </p>
 
                     <a href="<?= htmlspecialchars(
                         $basePath . "/booking?showingID="
-                        . (int) $showing["showingID"],
+                        . (int) $showing->getShowingID(),
                         ENT_QUOTES,
                         "UTF-8"
                     ) ?>">

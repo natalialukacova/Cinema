@@ -17,71 +17,65 @@ class ShowingRepository implements ShowingRepositoryInterface
     {
         $statement = $this->connection->prepare(
             "SELECT
-                s.showingID,
-                s.startDateTime,
-                s.basePrice,
+                s.*,
+                m.title AS movieTitle,
                 v.name AS venueName
-             FROM Showing s
-             INNER JOIN Venue v
-                ON s.venueID = v.venueID
-             WHERE s.movieID = :movieID
-               AND s.status = 'scheduled'
-               AND s.startDateTime >= NOW()
-               AND v.isActive = 1
-             ORDER BY s.startDateTime ASC"
+            FROM Showing s
+            JOIN Movie m ON m.movieID = s.movieID
+            JOIN Venue v ON v.venueID = s.venueID
+            WHERE s.movieID = :movieID
+            AND s.status = 'scheduled'
+            AND s.startDateTime >= NOW()
+            AND v.isActive = 1
+            ORDER BY s.startDateTime ASC"
         );
 
         $statement->execute([
             "movieID" => $movieID
         ]);
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $this->mapRowsToShowings(
+            $statement->fetchAll(PDO::FETCH_ASSOC)
+        );
     }
-    
+
     public function findUpcomingAll(): array
     {
         $statement = $this->connection->query(
             "SELECT
-                s.showingID,
-                s.movieID,
-                s.startDateTime,
-                s.basePrice,
+                s.*,
                 m.title AS movieTitle,
                 v.name AS venueName
             FROM Showing s
-            INNER JOIN Movie m
-                ON s.movieID = m.movieID
-            INNER JOIN Venue v
-                ON s.venueID = v.venueID
+            JOIN Movie m ON m.movieID = s.movieID
+            JOIN Venue v ON v.venueID = s.venueID
             WHERE s.status = 'scheduled'
             AND s.startDateTime >= NOW()
             AND v.isActive = 1
             ORDER BY s.startDateTime ASC"
         );
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $this->mapRowsToShowings(
+            $statement->fetchAll(PDO::FETCH_ASSOC)
+        );
     }
-    
+
     public function findAllForAdmin(): array
     {
         $statement = $this->connection->query(
             "SELECT
-                s.showingID,
-                s.movieID,
-                s.venueID,
-                s.startDateTime,
-                s.basePrice,
-                s.isPremiere,
-                s.status,
+                s.*,
                 m.title AS movieTitle,
                 v.name AS venueName
             FROM Showing s
-            JOIN Movie m ON s.movieID = m.movieID
-            JOIN Venue v ON s.venueID = v.venueID
+            JOIN Movie m ON m.movieID = s.movieID
+            JOIN Venue v ON v.venueID = s.venueID
             ORDER BY s.startDateTime DESC"
         );
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $this->mapRowsToShowings(
+            $statement->fetchAll(PDO::FETCH_ASSOC)
+        );
     }
   
     public function findByID(int $showingID): ?Showing
@@ -101,17 +95,7 @@ class ShowingRepository implements ShowingRepositoryInterface
         if (!$row) {
             return null;
         }
-
-        // Convert database row into a Showing object
-        return new Showing(
-            (int) $row["showingID"],
-            (int) $row["movieID"],
-            (int) $row["venueID"],
-            $row["startDateTime"],
-            (string) $row["basePrice"],
-            (bool) $row["isPremiere"],
-            $row["status"]
-        );
+        return $this->mapRowToShowing($row);
     }
 
     public function create(array $data): int
@@ -241,15 +225,12 @@ class ShowingRepository implements ShowingRepositoryInterface
     {
         $statement = $this->connection->query(
             "SELECT
-                s.showingID,
-                s.movieID,
-                s.startDateTime,
-                s.basePrice,
+                s.*,
                 m.title AS movieTitle,
                 v.name AS venueName
             FROM Showing s
-            JOIN Movie m ON s.movieID = m.movieID
-            JOIN Venue v ON s.venueID = v.venueID
+            JOIN Movie m ON m.movieID = s.movieID
+            JOIN Venue v ON v.venueID = s.venueID
             WHERE s.status = 'scheduled'
             AND s.startDateTime >= NOW()
             AND s.startDateTime < CURDATE() + INTERVAL 1 DAY
@@ -257,6 +238,32 @@ class ShowingRepository implements ShowingRepositoryInterface
             ORDER BY s.startDateTime ASC"
         );
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $this->mapRowsToShowings(
+            $statement->fetchAll(PDO::FETCH_ASSOC)
+        );
+    }
+
+    private function mapRowToShowing(array $row): Showing
+    {
+        // Convert database row into a Showing object
+        return new Showing(
+            (int) $row["showingID"],
+            (int) $row["movieID"],
+            (int) $row["venueID"],
+            $row["startDateTime"],
+            (string) $row["basePrice"],
+            (bool) $row["isPremiere"],
+            $row["status"],
+            $row["movieTitle"] ?? null,
+            $row["venueName"] ?? null
+        );
+    }
+
+    private function mapRowsToShowings(array $rows): array
+    {
+        return array_map(
+            fn(array $row): Showing => $this->mapRowToShowing($row),
+            $rows
+        );
     }
 }

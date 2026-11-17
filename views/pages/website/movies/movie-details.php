@@ -62,7 +62,7 @@
                 <article>
                     <h3>
                         <?= htmlspecialchars(
-                            $showing["venueName"],
+                            $showing->getVenueName(),
                             ENT_QUOTES,
                             'UTF-8'
                         ) ?>
@@ -71,14 +71,14 @@
                     <p>
                         <?= date(
                             "d.m.Y H:i",
-                            strtotime($showing["startDateTime"])
+                            strtotime($showing->getStartDateTime())
                         ) ?>
                     </p>
 
                     <p>
                         Price:
                         <?= number_format(
-                            (float) $showing["basePrice"],
+                            (float) $showing->getBasePrice(),
                             2
                         ) ?> DKK
                     </p>
