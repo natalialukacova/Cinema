@@ -67,13 +67,13 @@ $dateValue = str_replace(
 
                 <?php foreach ($venues as $venue): ?>
                     <option
-                        value="<?= (int) $venue["venueID"] ?>"
+                        value="<?= $venue->getVenueID() ?>"
                         <?= (string) ($values["venueID"] ?? "")
-                            === (string) $venue["venueID"]
+                            === (string) $venue->getVenueID()
                             ? "selected" : "" ?>
                     >
                         <?= htmlspecialchars(
-                            $venue["name"],
+                            $venue->getName(),
                             ENT_QUOTES,
                             "UTF-8"
                         ) ?>

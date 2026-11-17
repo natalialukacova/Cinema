@@ -9,21 +9,21 @@
             <article>
                 <h2>
                     <?= htmlspecialchars(
-                        $venue["name"],
+                        $venue->getName(),
                         ENT_QUOTES,
                         "UTF-8"
                     ) ?>
                 </h2>
 
                 <p>
-                    <?= (int) $venue["seatCount"] ?>
+                    <?= $venue->getSeatCount() ?>
                     seats
                 </p>
 
-                <?php if ($venue["description"]): ?>
+                <?php if ($venue->getDescription()): ?>
                     <p>
                         <?= htmlspecialchars(
-                            $venue["description"],
+                            $venue->getDescription(),
                             ENT_QUOTES,
                             "UTF-8"
                         ) ?>

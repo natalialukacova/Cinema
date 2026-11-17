@@ -41,6 +41,7 @@ class AdminShowingService
 
     public function createShowing(array $data): int
     {
+        // Validate data and check for schedule conflicts
         $validated = $this->validateShowing($data);
 
         $this->checkScheduleConflict($validated);
@@ -56,6 +57,7 @@ class AdminShowingService
             throw new DomainException("Showing not found.");
         }
 
+        // Do not allow editing showings with existing bookings
         if ($this->showingRepository->hasBookings($showingID)) {
             throw new DomainException(
                 "This showing already has bookings."
@@ -77,6 +79,7 @@ class AdminShowingService
 
     public function deleteShowing(int $showingID): bool
     {
+        // Do not allow deleting showings with existing bookings
         if ($this->showingRepository->hasBookings($showingID)) {
             throw new DomainException(
                 "Showing cannot be deleted because it has bookings."
@@ -90,6 +93,7 @@ class AdminShowingService
         array $data,
         ?int $excludeID = null
     ): void {
+        // Check overlapping showings only for scheduled status
         if ($data["status"] !== "scheduled") {
             return;
         }
@@ -108,6 +112,7 @@ class AdminShowingService
 
     private function validateShowing(array $data): array
     {
+        // Check required form fields
         foreach ([
             "movieID",
             "venueID",
@@ -126,6 +131,7 @@ class AdminShowingService
             }
         }
 
+        // Validate movie and venue IDs
         $movieID = filter_var(
             $data["movieID"],
             FILTER_VALIDATE_INT,
@@ -144,16 +150,18 @@ class AdminShowingService
             );
         }
 
+        // Check if the movie exists
         if ($this->movieRepository->findByID($movieID) === null) {
             throw new InvalidArgumentException(
                 "Selected movie does not exist."
             );
         }
 
+        // Check if the selected venue is active
         $venueFound = false;
 
         foreach ($this->venueRepository->findAllActive() as $venue) {
-            if ((int) $venue["venueID"] === $venueID) {
+            if ($venue->getVenueID() === $venueID) {
                 $venueFound = true;
                 break;
             }
@@ -165,6 +173,7 @@ class AdminShowingService
             );
         }
 
+        // Validate date and time format
         $date = DateTimeImmutable::createFromFormat(
             "!Y-m-d\TH:i",
             $data["startDateTime"]
@@ -179,6 +188,7 @@ class AdminShowingService
             );
         }
 
+        // Validate showing status
         $status = $data["status"];
 
         if (!in_array(
@@ -191,6 +201,7 @@ class AdminShowingService
             );
         }
 
+        // Scheduled showings must be in the future
         if (
             $status === "scheduled" &&
             $date <= new DateTimeImmutable()
@@ -200,6 +211,7 @@ class AdminShowingService
             );
         }
 
+        // Validate ticket price and premiere value
         if (!preg_match(
             "/^\d{1,6}(\.\d{1,2})?$/",
             $data["basePrice"]
@@ -218,6 +230,7 @@ class AdminShowingService
             );
         }
 
+        // Return validated data for the repository
         return [
             "movieID" => $movieID,
             "venueID" => $venueID,
