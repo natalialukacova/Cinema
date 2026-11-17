@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\CompanyRepositoryInterface;
+use App\Models\Company;
 use PDO;
 
 class CompanyRepository implements CompanyRepositoryInterface
@@ -12,7 +13,7 @@ class CompanyRepository implements CompanyRepositoryInterface
     ) {
     }
 
-    public function findFirst(): ?array
+    public function findFirst(): ?Company
     {
         // Get the first company from the database
         // Use query() because the SQL has no user input
@@ -29,9 +30,26 @@ class CompanyRepository implements CompanyRepositoryInterface
              LIMIT 1"
         );
 
-        // Return company data or null if no company exists
-        $company = $statement->fetch(PDO::FETCH_ASSOC);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $company ?: null;
+        if (!$row) {
+            return null;
+        }
+
+        // Return Company object or null if no company exists
+        return $this->mapRowToCompany($row);
+    }
+
+    private function mapRowToCompany(array $row): Company
+    {
+        // Convert database row into a Company object
+        return new Company(
+            (int) $row["companyID"],
+            $row["name"],
+            $row["description"],
+            $row["email"],
+            $row["phone"],
+            $row["address"]
+        );
     }
 }

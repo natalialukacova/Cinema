@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\CompanyRepositoryInterface;
+use App\Models\Company;
 
 class CompanyService
 {
@@ -11,7 +12,7 @@ class CompanyService
     ) {
     }
 
-    public function getCompany(): ?array
+    public function getCompany(): ?Company
     {
         return $this->companyRepository->findFirst();
     }

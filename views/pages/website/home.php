@@ -21,7 +21,7 @@
         <?php if ($company !== null): ?>
             <h3>
                 <?= htmlspecialchars(
-                    $company["name"],
+                    $company->getName(),
                     ENT_QUOTES,
                     "UTF-8"
                 ) ?>
@@ -29,7 +29,7 @@
 
             <p>
                 <?= nl2br(htmlspecialchars(
-                    $company["description"] ?? "",
+                    $company->getDescription() ?? "",
                     ENT_QUOTES,
                     "UTF-8"
                 )) ?>

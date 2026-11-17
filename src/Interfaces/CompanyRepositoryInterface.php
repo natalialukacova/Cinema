@@ -2,7 +2,9 @@
 
 namespace App\Interfaces;
 
+use App\Models\Company;
+
 interface CompanyRepositoryInterface
 {
-    public function findFirst(): ?array;
+    public function findFirst(): ?Company;
 }
