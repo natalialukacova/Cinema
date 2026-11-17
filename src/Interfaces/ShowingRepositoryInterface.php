@@ -2,6 +2,8 @@
 
 namespace App\Interfaces;
 
+use App\Models\Showing;
+
 interface ShowingRepositoryInterface
 {
     public function findUpcomingByMovieID(int $movieID): array;
@@ -10,7 +12,7 @@ interface ShowingRepositoryInterface
 
     public function findAllForAdmin(): array;
 
-    public function findByID(int $showingID): ?array;
+    public function findByID(int $showingID): ?Showing;
 
     public function create(array $data): int;
 

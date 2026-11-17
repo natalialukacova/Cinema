@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use PDO;
 use App\Interfaces\ShowingRepositoryInterface;
+use App\Models\Showing;
 
 class ShowingRepository implements ShowingRepositoryInterface
 {
@@ -82,8 +83,8 @@ class ShowingRepository implements ShowingRepositoryInterface
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    public function findByID(int $showingID): ?array
+  
+    public function findByID(int $showingID): ?Showing
     {
         $statement = $this->connection->prepare(
             "SELECT *
@@ -95,9 +96,22 @@ class ShowingRepository implements ShowingRepositoryInterface
             "showingID" => $showingID
         ]);
 
-        $showing = $statement->fetch(PDO::FETCH_ASSOC);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $showing ?: null;
+        if (!$row) {
+            return null;
+        }
+
+        // Convert database row into a Showing object
+        return new Showing(
+            (int) $row["showingID"],
+            (int) $row["movieID"],
+            (int) $row["venueID"],
+            $row["startDateTime"],
+            (string) $row["basePrice"],
+            (bool) $row["isPremiere"],
+            $row["status"]
+        );
     }
 
     public function create(array $data): int

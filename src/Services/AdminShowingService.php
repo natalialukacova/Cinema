@@ -8,6 +8,7 @@ use App\Interfaces\VenueRepositoryInterface;
 use DateTimeImmutable;
 use DomainException;
 use InvalidArgumentException;
+use App\Models\Showing;
 
 class AdminShowingService
 {
@@ -23,7 +24,7 @@ class AdminShowingService
         return $this->showingRepository->findAllForAdmin();
     }
 
-    public function getShowing(int $showingID): ?array
+    public function getShowing(int $showingID): ?Showing
     {
         return $this->showingRepository->findByID($showingID);
     }

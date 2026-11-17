@@ -210,10 +210,17 @@ class AdminShowingController
             echo "Showing not found.";
             return;
         }
-
+        
         $this->form(
             "edit",
-            $showing,
+            [
+                "movieID" => $showing->getMovieID(),
+                "venueID" => $showing->getVenueID(),
+                "startDateTime" => $showing->getStartDateTime(),
+                "basePrice" => $showing->getBasePrice(),
+                "isPremiere" => (int) $showing->getIsPremiere(),
+                "status" => $showing->getStatus()
+            ],
             $showingID
         );
     }
