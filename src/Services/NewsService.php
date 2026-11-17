@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Interfaces\NewsRepositoryInterface;
 use DomainException;
 use InvalidArgumentException;
+use App\Models\News;
 
 class NewsService
 {
@@ -23,7 +24,7 @@ class NewsService
         return $this->newsRepository->findPublished();
     }
 
-    public function getNewsByID(int $newsID): ?array
+    public function getNewsByID(int $newsID): ?News
     {
         return $this->newsRepository->findByID($newsID);
     }

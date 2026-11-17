@@ -42,26 +42,26 @@ $basePath = rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\");
                 <?php foreach ($news as $article): ?>
                     <tr>
                         <td>
-                            <?= (int) $article["newsID"] ?>
+                            <?= (int) $article->getNewsID() ?>
                         </td>
 
                         <td>
                             <?= htmlspecialchars(
-                                $article["title"],
+                                $article->getTitle(),
                                 ENT_QUOTES,
                                 "UTF-8"
                             ) ?>
                         </td>
 
                         <td>
-                            <?= (int) $article["isPublished"] === 1
+                            <?= $article->getIsPublished()
                                 ? "Published"
                                 : "Draft" ?>
                         </td>
 
                         <td>
                             <?= htmlspecialchars(
-                                $article["publishedAt"] ?? "-",
+                                $article->getPublishedAt() ?? "-",
                                 ENT_QUOTES,
                                 "UTF-8"
                             ) ?>
@@ -70,7 +70,7 @@ $basePath = rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\");
                         <td>
                             <a href="<?= htmlspecialchars(
                                 $basePath . "/admin/news/edit?id="
-                                . (int) $article["newsID"],
+                                . (int) $article->getNewsID(),
                                 ENT_QUOTES,
                                 "UTF-8"
                             ) ?>">
@@ -98,7 +98,7 @@ $basePath = rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\");
                                 <input
                                     type="hidden"
                                     name="newsID"
-                                    value="<?= (int) $article["newsID"] ?>"
+                                    value="<?= (int) $article->getNewsID() ?>"
                                 >
 
                                 <button type="submit">

@@ -9,7 +9,7 @@
             <article>
                 <h2>
                     <?= htmlspecialchars(
-                        $article["title"],
+                        $article->getTitle(),
                         ENT_QUOTES,
                         "UTF-8"
                     ) ?>
@@ -18,16 +18,16 @@
                 <p>
                     Published:
                     <?= htmlspecialchars(
-                        $article["publishedAt"],
+                        $article->getPublishedAt() ?? "",
                         ENT_QUOTES,
                         "UTF-8"
                     ) ?>
                 </p>
 
-                <?php if (!empty($article["imageURL"])): ?>
+                <?php if ($article->getImageURL()): ?>
                     <img
                         src="<?= htmlspecialchars(
-                            $article["imageURL"],
+                            $article->getImageURL(),
                             ENT_QUOTES,
                             "UTF-8"
                         ) ?>"
@@ -38,7 +38,7 @@
 
                 <p>
                     <?= nl2br(htmlspecialchars(
-                        $article["content"],
+                        $article->getContent(),
                         ENT_QUOTES,
                         "UTF-8"
                     )) ?>

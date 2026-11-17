@@ -194,7 +194,16 @@ class AdminNewsController
             return;
         }
 
-        $this->form("edit", $news, $newsID);
+        $this->form(
+            "edit",
+            [
+                "title" => $news->getTitle(),
+                "content" => $news->getContent(),
+                "imageURL" => $news->getImageURL() ?? "",
+                "isPublished" => (int) $news->getIsPublished()
+            ],
+            $newsID
+        );
     }
 
     public function update(): void

@@ -116,7 +116,7 @@
                 <article>
                     <h3>
                         <?= htmlspecialchars(
-                            $article["title"],
+                            $article->getTitle(),
                             ENT_QUOTES,
                             "UTF-8"
                         ) ?>
@@ -124,7 +124,7 @@
 
                     <p>
                         <?= nl2br(htmlspecialchars(
-                            $article["content"],
+                            $article->getContent(),
                             ENT_QUOTES,
                             "UTF-8"
                         )) ?>

@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\NewsRepositoryInterface;
 use PDO;
 use RuntimeException;
+use App\Models\News;
 
 class NewsRepository implements NewsRepositoryInterface
 {
@@ -22,24 +23,27 @@ class NewsRepository implements NewsRepositoryInterface
              ORDER BY n.newsID DESC"
         );
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $this->mapRowsToNews(
+            $statement->fetchAll(PDO::FETCH_ASSOC)
+        );
     }
 
     public function findPublished(): array
     {
         $statement = $this->connection->query(
-            "SELECT newsID, title, content,
-                    imageURL, publishedAt
+            "SELECT *
              FROM News
              WHERE isPublished = 1
                AND publishedAt <= NOW()
              ORDER BY publishedAt DESC, newsID DESC"
         );
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $this->mapRowsToNews(
+            $statement->fetchAll(PDO::FETCH_ASSOC)
+        );
     }
 
-    public function findByID(int $newsID): ?array
+    public function findByID(int $newsID): ?News
     {
         $statement = $this->connection->prepare(
             "SELECT *
@@ -51,9 +55,13 @@ class NewsRepository implements NewsRepositoryInterface
             "newsID" => $newsID
         ]);
 
-        $news = $statement->fetch(PDO::FETCH_ASSOC);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $news ?: null;
+        if (!$row) {
+            return null;
+        }
+
+        return $this->mapRowToNews($row);
     }
 
     private function getCompanyID(): int
@@ -143,5 +151,28 @@ class NewsRepository implements NewsRepositoryInterface
         ]);
 
         return $statement->rowCount() > 0;
+    }
+
+    private function mapRowToNews(array $row): News
+    {
+        // Convert database row into a News object
+        return new News(
+            (int) $row["newsID"],
+            (int) $row["companyID"],
+            $row["title"],
+            $row["content"],
+            $row["publishedAt"],
+            $row["imageURL"],
+            (bool) $row["isPublished"],
+            $row["companyName"] ?? null
+        );
+    }
+
+    private function mapRowsToNews(array $rows): array
+    {
+        return array_map(
+            fn(array $row): News => $this->mapRowToNews($row),
+            $rows
+        );
     }
 }
