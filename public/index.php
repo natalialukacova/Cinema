@@ -31,6 +31,7 @@ use App\Controllers\Admin\AdminNewsController;
 use App\Controllers\Website\NewsController;
 use App\Repositories\CompanyRepository;
 use App\Services\CompanyService;
+use App\Controllers\Admin\AdminCompanyController;
 
 session_set_cookie_params([
     "httponly" => true,
@@ -131,6 +132,10 @@ $adminNewsController = new AdminNewsController(
 
 $newsController = new NewsController($newsService);
 
+$adminCompanyController = new AdminCompanyController(
+    $companyService,
+    $adminGuard
+);
 
 $basePath = rtrim(
     dirname($_SERVER["SCRIPT_NAME"]),

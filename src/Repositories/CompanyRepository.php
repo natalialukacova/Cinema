@@ -40,6 +40,29 @@ class CompanyRepository implements CompanyRepositoryInterface
         return $this->mapRowToCompany($row);
     }
 
+    public function update(int $companyID, array $data): void
+    {
+        $statement = $this->connection->prepare(
+            "UPDATE Company
+            SET
+                name = :name,
+                description = :description,
+                email = :email,
+                phone = :phone,
+                address = :address
+            WHERE companyID = :companyID"
+        );
+
+        $statement->execute([
+            "companyID" => $companyID,
+            "name" => $data["name"],
+            "description" => $data["description"],
+            "email" => $data["email"],
+            "phone" => $data["phone"],
+            "address" => $data["address"]
+        ]);
+    }
+
     private function mapRowToCompany(array $row): Company
     {
         // Convert database row into a Company object

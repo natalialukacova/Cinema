@@ -144,6 +144,14 @@ $router->get("/news", function () use ($newsController) {
     $newsController->index();
 });
 
+$router->get("/admin/company", function () use ($adminCompanyController) {
+    $adminCompanyController->edit();
+});
+
+$router->post("/admin/company", function () use ($adminCompanyController) {
+    $adminCompanyController->update();
+});
+
 $router->notFound(function () {
     echo "<h1>404</h1>";
     echo "<p>Page not found.</p>";

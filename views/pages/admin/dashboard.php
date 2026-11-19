@@ -66,4 +66,14 @@
             Manage News
         </a>
     </p>
+    <p>
+        <a href="<?= htmlspecialchars(
+            rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\")
+            . "/admin/company",
+            ENT_QUOTES,
+            "UTF-8"
+        ) ?>">
+            Manage Company
+        </a>
+    </p>
 </main>
