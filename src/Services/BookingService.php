@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\BookingRepository;
 use InvalidArgumentException;
 use App\Interfaces\BookingRepositoryInterface;
+use App\Models\Booking;
 
 class BookingService
 {
@@ -39,7 +40,7 @@ class BookingService
     public function getBooking(
         int $bookingID,
         int $userID
-    ): ?array {
+    ): ?Booking {
         return $this->bookingRepository->findForUser(
             $bookingID,
             $userID

@@ -3,12 +3,12 @@
 
     <p>
         Booking ID:
-        <?= (int) $booking["bookingID"] ?>
+        <?= (int) $booking->getBookingID() ?>
     </p>
 
     <h2>
         <?= htmlspecialchars(
-            $booking["movieTitle"],
+            $booking->getMovieTitle(),
             ENT_QUOTES,
             "UTF-8"
         ) ?>
@@ -17,7 +17,7 @@
     <p>
         Venue:
         <?= htmlspecialchars(
-            $booking["venueName"],
+            $booking->getVenueName(),
             ENT_QUOTES,
             "UTF-8"
         ) ?>
@@ -26,7 +26,7 @@
     <p>
         Date:
         <?= htmlspecialchars(
-            $booking["startDateTime"],
+            $booking->getStartDateTime(),
             ENT_QUOTES,
             "UTF-8"
         ) ?>
@@ -37,7 +37,7 @@
         <?php
         $seats = array_map(
             fn($seat) => $seat["rowLabel"] . $seat["seatNumber"],
-            $booking["seats"]
+            $booking->getSeats()
         );
         ?>
         <?= htmlspecialchars(
@@ -50,7 +50,7 @@
     <p>
         Total:
         <?= number_format(
-            (float) $booking["totalPrice"],
+            (float) $booking->getTotalPrice(),
             2
         ) ?> DKK
     </p>

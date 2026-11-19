@@ -9,20 +9,20 @@
             <article>
                 <h2>
                     <?= htmlspecialchars(
-                        $booking["movieTitle"],
+                        $booking->getMovieTitle(),
                         ENT_QUOTES,
                         "UTF-8"
                     ) ?>
                 </h2>
 
                 <p>
-                    Booking #<?= (int) $booking["bookingID"] ?>
+                    Booking #<?= (int) $booking->getBookingID() ?>
                 </p>
 
                 <p>
                     Venue:
                     <?= htmlspecialchars(
-                        $booking["venueName"],
+                        $booking->getVenueName(),
                         ENT_QUOTES,
                         "UTF-8"
                     ) ?>
@@ -31,7 +31,7 @@
                 <p>
                     Showing:
                     <?= htmlspecialchars(
-                        $booking["startDateTime"],
+                        $booking->getStartDateTime(),
                         ENT_QUOTES,
                         "UTF-8"
                     ) ?>
@@ -39,13 +39,13 @@
 
                 <p>
                     Tickets:
-                    <?= (int) $booking["ticketCount"] ?>
+                    <?= (int) $booking->getTicketCount() ?>
                 </p>
 
                 <p>
                     Total:
                     <?= number_format(
-                        (float) $booking["totalPrice"],
+                        (float) $booking->getTotalPrice(),
                         2
                     ) ?> DKK
                 </p>
@@ -53,7 +53,7 @@
                 <p>
                     Status:
                     <?= htmlspecialchars(
-                        $booking["status"],
+                        $booking->getStatus(),
                         ENT_QUOTES,
                         "UTF-8"
                     ) ?>
@@ -64,7 +64,7 @@
                         dirname($_SERVER["SCRIPT_NAME"]),
                         "/\\"
                     ) . "/booking-confirmation?id="
-                    . (int) $booking["bookingID"],
+                    . (int) $booking->getBookingID(),
                     ENT_QUOTES,
                     "UTF-8"
                 ) ?>">

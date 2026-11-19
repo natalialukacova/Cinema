@@ -2,6 +2,8 @@
 
 namespace App\Interfaces;
 
+use App\Models\Booking;
+
 interface BookingRepositoryInterface
 {
     public function findShowing(int $showingID): ?array;
@@ -15,7 +17,7 @@ interface BookingRepositoryInterface
     public function findForUser(
         int $bookingID,
         int $userID
-    ): ?array;
+    ): ?Booking;
 
     public function findByUserID(int $userID): array;
 }

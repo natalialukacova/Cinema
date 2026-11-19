@@ -6,6 +6,7 @@ use DomainException;
 use PDO;
 use Throwable;
 use App\Interfaces\BookingRepositoryInterface;
+use App\Models\Booking;
 
 class BookingRepository implements BookingRepositoryInterface
 {
@@ -173,21 +174,19 @@ class BookingRepository implements BookingRepositoryInterface
     public function findForUser(
         int $bookingID,
         int $userID
-    ): ?array {
+    ): ?Booking {
         $statement = $this->connection->prepare(
             "SELECT
-                b.bookingID,
-                b.totalPrice,
-                b.status,
+                b.*,
                 s.startDateTime,
                 m.title AS movieTitle,
                 v.name AS venueName
-             FROM Booking b
-             JOIN Showing s ON b.showingID = s.showingID
-             JOIN Movie m ON s.movieID = m.movieID
-             JOIN Venue v ON s.venueID = v.venueID
-             WHERE b.bookingID = :bookingID
-               AND b.userID = :userID"
+            FROM Booking b
+            JOIN Showing s ON b.showingID = s.showingID
+            JOIN Movie m ON s.movieID = m.movieID
+            JOIN Venue v ON s.venueID = v.venueID
+            WHERE b.bookingID = :bookingID
+            AND b.userID = :userID"
         );
 
         $statement->execute([
@@ -195,37 +194,39 @@ class BookingRepository implements BookingRepositoryInterface
             "userID" => $userID
         ]);
 
-        $booking = $statement->fetch(PDO::FETCH_ASSOC);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if (!$booking) {
+        if (!$row) {
             return null;
         }
 
+        // Get seats assigned to this booking
         $statement = $this->connection->prepare(
             "SELECT s.rowLabel, s.seatNumber
-             FROM BookingSeat bs
-             JOIN Seat s ON bs.seatID = s.seatID
-             WHERE bs.bookingID = :bookingID
-             ORDER BY s.rowLabel, s.seatNumber"
+            FROM BookingSeat bs
+            JOIN Seat s ON bs.seatID = s.seatID
+            WHERE bs.bookingID = :bookingID
+            ORDER BY s.rowLabel, s.seatNumber"
         );
 
-        $statement->execute(["bookingID" => $bookingID]);
+        $statement->execute([
+            "bookingID" => $bookingID
+        ]);
 
-        $booking["seats"] = $statement->fetchAll(
+        $row["seats"] = $statement->fetchAll(
             PDO::FETCH_ASSOC
         );
 
-        return $booking;
+        $row["ticketCount"] = count($row["seats"]);
+
+        return $this->mapRowToBooking($row);
     }
 
     public function findByUserID(int $userID): array
     {
         $statement = $this->connection->prepare(
             "SELECT
-                b.bookingID,
-                b.status,
-                b.totalPrice,
-                b.bookedAt,
+                b.*,
                 s.startDateTime,
                 m.title AS movieTitle,
                 v.name AS venueName,
@@ -246,6 +247,34 @@ class BookingRepository implements BookingRepositoryInterface
             "userID" => $userID
         ]);
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $this->mapRowsToBookings(
+            $statement->fetchAll(PDO::FETCH_ASSOC)
+        );
+    }
+
+    private function mapRowToBooking(array $row): Booking
+    {
+        // Convert database row into a Booking object
+        return new Booking(
+            (int) $row["bookingID"],
+            (int) $row["userID"],
+            (int) $row["showingID"],
+            $row["bookedAt"],
+            $row["status"],
+            (string) $row["totalPrice"],
+            $row["startDateTime"],
+            $row["movieTitle"],
+            $row["venueName"],
+            (int) $row["ticketCount"],
+            $row["seats"] ?? []
+        );
+    }
+
+    private function mapRowsToBookings(array $rows): array
+    {
+        return array_map(
+            fn(array $row): Booking => $this->mapRowToBooking($row),
+            $rows
+        );
     }
 }
