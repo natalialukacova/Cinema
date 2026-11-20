@@ -71,7 +71,10 @@
 
                         <?php if ($hour->getIsClosed()): ?>
                             Closed
-                        <?php else: ?>
+                        <?php elseif (
+                            $hour->getOpensAt() !== null &&
+                            $hour->getClosesAt() !== null
+                        ): ?>
                             <?= htmlspecialchars(
                                 substr($hour->getOpensAt(), 0, 5),
                                 ENT_QUOTES,
@@ -83,6 +86,8 @@
                                 ENT_QUOTES,
                                 "UTF-8"
                             ) ?>
+                        <?php else: ?>
+                            Hours unavailable
                         <?php endif; ?>
                     </li>
                 <?php endforeach; ?>
