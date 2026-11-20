@@ -7,6 +7,7 @@ use App\Services\MovieService;
 use App\Services\NewsService;
 use App\Services\ProgramService;
 use App\Services\CompanyService;
+use App\Services\OpeningHourService;
 
 class HomeController
 {
@@ -14,7 +15,8 @@ class HomeController
         private MovieService $movieService,
         private NewsService $newsService,
         private ProgramService $programService,
-        private CompanyService $companyService
+        private CompanyService $companyService,
+        private OpeningHourService $openingHourService
     ) {
     }
 
@@ -34,6 +36,8 @@ class HomeController
 
         $company = $this->companyService->getCompany();
 
+        $openingHours = $this->openingHourService->getHours();
+
         View::render(
             "pages/website/home",
             [
@@ -41,7 +45,8 @@ class HomeController
                 "movies" => $movies,
                 "news" => $news,
                 "todayShowings" => $todayShowings,
-                "company" => $company
+                "company" => $company,
+                "openingHours" => $openingHours
             ]
         );
     }

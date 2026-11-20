@@ -152,6 +152,14 @@ $router->post("/admin/company", function () use ($adminCompanyController) {
     $adminCompanyController->update();
 });
 
+$router->get("/admin/opening-hours", function () use ($adminOpeningHourController) {
+    $adminOpeningHourController->edit();
+});
+
+$router->post("/admin/opening-hours", function () use ($adminOpeningHourController) {
+    $adminOpeningHourController->update();
+});
+
 $router->notFound(function () {
     echo "<h1>404</h1>";
     echo "<p>Page not found.</p>";

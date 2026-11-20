@@ -32,6 +32,9 @@ use App\Controllers\Website\NewsController;
 use App\Repositories\CompanyRepository;
 use App\Services\CompanyService;
 use App\Controllers\Admin\AdminCompanyController;
+use App\Repositories\OpeningHourRepository;
+use App\Services\OpeningHourService;
+use App\Controllers\Admin\AdminOpeningHourController;
 
 session_set_cookie_params([
     "httponly" => true,
@@ -65,6 +68,7 @@ $bookingRepository = new BookingRepository($pdo);
 $adminRepository = new AdminRepository($pdo);
 $newsRepository = new NewsRepository($pdo);
 $companyRepository = new CompanyRepository($pdo);
+$openingHourRepository = new OpeningHourRepository($pdo);
 
 // Services
 $movieService = new MovieService(
@@ -95,12 +99,18 @@ $newsService = new NewsService($newsRepository);
 
 $companyService = new CompanyService($companyRepository);
 
+$openingHourService = new OpeningHourService(
+    $openingHourRepository,
+    $companyRepository
+);
+
 // Controllers
 $homeController = new HomeController(
     $movieService,
     $newsService,
     $programService,
-    $companyService
+    $companyService,
+    $openingHourService
 );
 
 $movieController = new MovieController($movieService);
@@ -136,6 +146,12 @@ $adminCompanyController = new AdminCompanyController(
     $companyService,
     $adminGuard
 );
+
+$adminOpeningHourController = new AdminOpeningHourController(
+    $openingHourService,
+    $adminGuard
+);
+
 
 $basePath = rtrim(
     dirname($_SERVER["SCRIPT_NAME"]),

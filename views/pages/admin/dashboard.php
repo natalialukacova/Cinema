@@ -76,4 +76,14 @@
             Manage Company
         </a>
     </p>
+    <p>
+        <a href="<?= htmlspecialchars(
+            rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\")
+            . "/admin/opening-hours",
+            ENT_QUOTES,
+            "UTF-8"
+        ) ?>">
+            Manage Opening Hours
+        </a>
+    </p>
 </main>

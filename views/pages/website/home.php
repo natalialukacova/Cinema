@@ -39,6 +39,57 @@
         <?php endif; ?>
     </section>
 
+    <!-- Cinema opening hours -->
+    <section>
+        <h2>Opening Hours</h2>
+
+        <?php
+        $dayNames = [
+            1 => "Monday",
+            2 => "Tuesday",
+            3 => "Wednesday",
+            4 => "Thursday",
+            5 => "Friday",
+            6 => "Saturday",
+            7 => "Sunday"
+        ];
+        ?>
+
+        <?php if (empty($openingHours)): ?>
+            <p>Opening hours are not available yet.</p>
+        <?php else: ?>
+            <ul>
+                <?php foreach ($openingHours as $hour): ?>
+                    <li>
+                        <strong>
+                            <?= htmlspecialchars(
+                                $dayNames[$hour->getDayOfWeek()],
+                                ENT_QUOTES,
+                                "UTF-8"
+                            ) ?>:
+                        </strong>
+
+                        <?php if ($hour->getIsClosed()): ?>
+                            Closed
+                        <?php else: ?>
+                            <?= htmlspecialchars(
+                                substr($hour->getOpensAt(), 0, 5),
+                                ENT_QUOTES,
+                                "UTF-8"
+                            ) ?>
+                            -
+                            <?= htmlspecialchars(
+                                substr($hour->getClosesAt(), 0, 5),
+                                ENT_QUOTES,
+                                "UTF-8"
+                            ) ?>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </section>
+
     <!-- Today's upcoming showings with booking links -->
     <section>
         <h2>Today's Showings</h2>
